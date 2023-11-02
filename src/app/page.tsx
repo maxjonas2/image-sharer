@@ -6,7 +6,7 @@ function HomePage() {
       <header>
         <div className='content'>
           <div>logo</div>
-          <nav>
+          <nav className='flex gap-4'>
             <p>Home</p>
             <p>About</p>
             <p>Others</p>

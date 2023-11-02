@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json(
     {
-      message: "ok",
+      status: "success",
       ids: images.map((im) => im.id),
       metadata: metadata,
     },
