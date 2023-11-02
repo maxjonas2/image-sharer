@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function UploadContainer() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -9,6 +10,10 @@ export default function UploadContainer() {
 
   const [dragEnter, setDragEnter] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const [awaitingUpload, setAwaitingUpload] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   async function handleFileInput(files: File[]) {
     if (!files) throw new Error("No files");
@@ -22,12 +27,22 @@ export default function UploadContainer() {
       formData.append(file.name, file);
     }
 
+    setAwaitingUpload(true);
+
     const response = await fetch("api/upload", {
       method: "POST",
       body: formData,
     });
 
     const result = await response.json();
+
+    setAwaitingUpload(false);
+
+    if (response.ok) {
+      router.push(result.bucketId);
+    } else {
+      setError("There was an error.");
+    }
 
     console.log(result);
   }
@@ -72,6 +87,18 @@ export default function UploadContainer() {
       throw new Error("No files");
 
     handleFileInput(files as File[]);
+  }
+
+  if (awaitingUpload) {
+    return (
+      <div className='h-screen grid place-content-center'>
+        Uploading files...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className='h-screen grid place-content-center'>{error}</div>;
   }
 
   return (

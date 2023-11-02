@@ -31,13 +31,15 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const metadata = await uploadFilesToBucket(images);
+  const bucketId = randomUUID();
+  const metadata = await uploadFilesToBucket(images, bucketId);
 
   return NextResponse.json(
     {
       status: "success",
       ids: images.map((im) => im.id),
-      metadata: metadata,
+      metadata,
+      bucketId,
     },
     { status: 201 }
   );
