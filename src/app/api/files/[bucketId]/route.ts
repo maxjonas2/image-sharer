@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDownloadLinks, getFilesFromBucket } from "../../lib/storage";
+import { getDownloadLinks } from "../../lib/storage";
 
 export async function GET(
   _: NextRequest,
