@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 export default function UploadContainer() {
@@ -31,14 +32,10 @@ export default function UploadContainer() {
     console.log(result);
   }
 
-  async function handleFileUpload(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.dir(inputRef.current);
+  async function handleFileUpload() {
+    if (files.length === 0) throw new Error("Ref not initialized");
 
-    if (!inputRef.current || !inputRef.current.files)
-      throw new Error("Ref not initialized");
-
-    await uploadFiles([...inputRef.current.files]);
+    await uploadFiles(files);
   }
 
   useEffect(() => {
@@ -79,7 +76,7 @@ export default function UploadContainer() {
 
   return (
     <>
-      <form action='' onSubmit={handleFileUpload}>
+      <form action=''>
         <div className='flex flex-col'>
           <label htmlFor=''>Pick images</label>
           <input
@@ -88,14 +85,18 @@ export default function UploadContainer() {
             ref={inputRef}
             onInput={(e) => handleFileInput([...e.currentTarget.files!])}
           />
-          <button type='submit'>Upload</button>
+          <button type='button' onClick={handleFileUpload}>
+            Upload
+          </button>
         </div>
       </form>
       <div
         ref={dragAreaRef}
-        className='image-drag-area h-32 border-2 border-slate-200 border-dashed'
-      ></div>
-      <div>
+        className={clsx(
+          "image-drag-area h-32 border-2 border-slate-200 border-dashed transition-all",
+          dragEnter && "border-4 border-green-600"
+        )}
+      >
         <FilePreview files={files} />
       </div>
     </>
