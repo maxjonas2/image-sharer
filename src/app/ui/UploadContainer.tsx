@@ -105,13 +105,6 @@ export default function UploadContainer() {
     <>
       <form action=''>
         <div className='flex flex-col'>
-          <label htmlFor=''>Pick images</label>
-          <input
-            type='file'
-            multiple
-            ref={inputRef}
-            onInput={(e) => handleFileInput([...e.currentTarget.files!])}
-          />
           <button type='button' onClick={handleFileUpload}>
             Upload
           </button>
@@ -120,11 +113,22 @@ export default function UploadContainer() {
       <div
         ref={dragAreaRef}
         className={clsx(
-          "image-drag-area h-32 border-2 border-slate-200 border-dashed transition-all",
+          "image-drag-area min-h-32 border-2 border-slate-300 border-dashed transition-all grid place-content-center",
           dragEnter && "border-4 border-green-600"
         )}
       >
+        {files.length === 0 && <p>Drag and Drop</p>}
         <FilePreview files={files} />
+      </div>
+      <div>
+        <form action='' onInput={(e) => console.log(e.currentTarget)}>
+          <input
+            type='file'
+            multiple
+            ref={inputRef}
+            onInput={(e) => handleFileInput([...e.currentTarget.files!])}
+          />
+        </form>
       </div>
     </>
   );
@@ -140,7 +144,7 @@ function FilePreview({ files }: { files: File[] }) {
   });
 
   return (
-    <div className='flex flex-wrap gap-4'>
+    <div className='flex flex-wrap gap-4 p-[2rem]'>
       {urls.map((url) => {
         return (
           <img

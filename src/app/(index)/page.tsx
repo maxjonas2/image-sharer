@@ -1,11 +1,11 @@
-import UploadContainer from "./ui/UploadContainer";
+import UploadContainer from "../ui/UploadContainer";
 
 function HomePage() {
   return (
     <>
       <header>
         <div className='content'>
-          <div>logo</div>
+          <div>Logo</div>
           <nav className='flex gap-4'>
             <p>Home</p>
             <p>About</p>
@@ -15,12 +15,10 @@ function HomePage() {
         </div>
       </header>
       <main>
-        <div className='content space-y-4'>
-          <h1>
-            File sharer. The quickest way to share images with friends and
-            family.
-          </h1>
-          <UploadContainer />
+        <div className='content'>
+          <div className='ui-card p-8 rounded-lg shadow-lg bg-slate-100 mt-6'>
+            <UploadContainer />
+          </div>
         </div>
       </main>
       <footer>
