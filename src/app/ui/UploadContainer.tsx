@@ -12,6 +12,7 @@ export default function UploadContainer() {
   const [files, setFiles] = useState<File[]>([]);
   const [awaitingUpload, setAwaitingUpload] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [bucketId, setBucketId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -39,7 +40,9 @@ export default function UploadContainer() {
     setAwaitingUpload(false);
 
     if (response.ok) {
-      router.push(result.bucketId);
+      setTimeout(() => {
+        router.push(`/success/${result.bucketId}`);
+      }, 2000);
     } else {
       setError("There was an error.");
     }
@@ -129,6 +132,12 @@ export default function UploadContainer() {
             onInput={(e) => handleFileInput([...e.currentTarget.files!])}
           />
         </form>
+        {bucketId && (
+          <div>
+            <p>Files uploaded!</p>
+            <p>Code : {bucketId}</p>
+          </div>
+        )}
       </div>
     </>
   );
@@ -144,19 +153,21 @@ function FilePreview({ files }: { files: File[] }) {
   });
 
   return (
-    <div className='flex flex-wrap gap-4 p-[2rem]'>
-      {urls.map((url) => {
-        return (
-          <img
-            key={url}
-            src={url}
-            alt='Uploaded image'
-            width={120}
-            height={120}
-            className='object-cover rounded-md w-[120px] h-[120px] shadow-lg'
-          />
-        );
-      })}
-    </div>
+    <>
+      <div className='flex flex-wrap gap-4 p-[2rem]'>
+        {urls.map((url) => {
+          return (
+            <img
+              key={url}
+              src={url}
+              alt='Uploaded image'
+              width={120}
+              height={120}
+              className='object-cover rounded-md w-[120px] h-[120px] shadow-lg'
+            />
+          );
+        })}
+      </div>
+    </>
   );
 }

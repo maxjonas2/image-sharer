@@ -13,8 +13,6 @@ export default async function BucketPage({
   });
   const { downloadLinks } = await response.json();
 
-  console.log(downloadLinks as string[]);
-
   return (
     <div>
       <p>Hello world</p>

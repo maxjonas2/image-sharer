@@ -16,7 +16,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={"px-6 bg-slate-200 " + inter.className}>{children}</body>
+      <body className={"px-6 bg-slate-200 space-y-4 " + inter.className}>
+        <header>
+          <div className='content'>
+            <div>Logo</div>
+            <nav className='flex gap-4'>
+              <p>Home</p>
+              <p>About</p>
+              <p>Others</p>
+              <p>Contribute</p>
+            </nav>
+          </div>
+        </header>
+        <>{children}</>
+      </body>
     </html>
   );
 }
