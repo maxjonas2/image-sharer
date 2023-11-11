@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { uploadFilesToBucket } from "../lib/storage";
+import { uploadMultipleFilesToBucket } from "../lib/storage";
 
 export type FirebaseFile = {
   content: Uint8Array;
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   }
 
   const bucketId = randomUUID();
-  const metadata = await uploadFilesToBucket(images, bucketId);
+  const metadata = await uploadMultipleFilesToBucket(images, bucketId);
 
   return NextResponse.json(
     {
@@ -44,3 +44,5 @@ export async function POST(request: NextRequest) {
     { status: 201 }
   );
 }
+
+// const stream = new ReadableStream({ pull: (controller) => {} });

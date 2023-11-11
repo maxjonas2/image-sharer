@@ -9,29 +9,55 @@ import {
 } from "firebase/storage";
 import { ImageRecord } from "../upload/route";
 import { app } from "./firebase";
+import { randomUUID } from "crypto";
 
 const storage = getStorage(app);
 
-export async function uploadFilesToBucket(
+export async function uploadMultipleFilesToBucket(
   records: ImageRecord[],
   bucketId: string
 ): Promise<FullMetadata[]> {
   const metadata: FullMetadata[] = [];
+  const log: string[] = [];
 
   for (const record of records) {
-    const imageRef = ref(
-      storage,
-      `${bucketId || "uploaded_images"}/` +
-        record.id +
-        "." +
-        record.file.name.split(".")[1]
+    if (validateFileName(record.file.name) === false)
+      throw new Error("Wrong file name");
+
+    const uploadResult = await uploadSingleFileToBucket(
+      record.file.content,
+      record.file.name,
+      bucketId
     );
-    const uploadResult = await uploadBytes(imageRef, record.file.content);
-    console.log("Uploaded " + uploadResult.metadata.fullPath);
+
+    const uploadMessage = "Uploaded " + uploadResult.metadata.fullPath;
+    log.push(uploadMessage);
     metadata.push(uploadResult.metadata);
   }
 
   return metadata;
+}
+
+async function uploadSingleFileToBucket(
+  file: Blob | Uint8Array | ArrayBuffer,
+  fileName: string,
+  bucketId: string
+) {
+  if (/\w+\.(jpeg|jpg|png|webm)/.test(fileName) === false)
+    throw new Error("Invalid file name");
+
+  const ext = fileName.split(".")[1];
+
+  const imageId = randomUUID();
+
+  const imageRef = ref(
+    storage,
+    `${bucketId || "uploaded_images"}/${imageId}.${ext}`
+  );
+
+  const singleImageUploadResult = uploadBytes(imageRef, file);
+
+  return singleImageUploadResult;
 }
 
 export async function getFileList(bucketId: string) {
@@ -57,4 +83,8 @@ export async function getDownloadLinks(bucketId: string) {
     downloadLinks.push(await getDownloadURL(file));
   }
   return downloadLinks;
+}
+
+function validateFileName(_: string) {
+  return true;
 }
