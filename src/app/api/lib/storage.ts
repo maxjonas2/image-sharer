@@ -15,6 +15,17 @@ import { PubSub } from "@google-cloud/pubsub";
 const storage = getStorage(app);
 const pubSubClient = new PubSub();
 
+function publishMessage(message: string | Buffer): void {
+  const data = Buffer.from(message);
+
+  pubSubClient
+    .topic("UPLOADED_IMAGES")
+    .publishMessage({ data })
+    .then((value) => {
+      console.log("Pubsub message " + value + " published.");
+    });
+}
+
 export async function uploadMultipleFilesToBucket(
   records: ImageRecord[],
   bucketId: string
@@ -36,6 +47,9 @@ export async function uploadMultipleFilesToBucket(
     log.push(uploadMessage);
     metadata.push(uploadResult.metadata);
   }
+
+  // This shouldn't care whether the message was published. Hence no "await" directive.
+  publishMessage(JSON.stringify(metadata));
 
   return metadata;
 }
