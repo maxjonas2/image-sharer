@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/pubsub": "^4.0.7",
     "clsx": "^2.0.0",
     "firebase": "^10.5.2",
     "next": "14.0.1",

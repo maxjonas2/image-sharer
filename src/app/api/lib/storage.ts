@@ -10,8 +10,10 @@ import {
 import { ImageRecord } from "../upload/route";
 import { app } from "./firebase";
 import { randomUUID } from "crypto";
+import { PubSub } from "@google-cloud/pubsub";
 
 const storage = getStorage(app);
+const pubSubClient = new PubSub();
 
 export async function uploadMultipleFilesToBucket(
   records: ImageRecord[],

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./ui/globals.css";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
           <div className='content'>
             <div>Logo</div>
             <nav className='flex gap-4'>
-              <p>Home</p>
+              <Link href='/'>Home</Link>
               <p>About</p>
               <p>Others</p>
               <p>Contribute</p>
