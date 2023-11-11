@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ImageGrid from "../ui/ImageGrid";
+import config from "@/config";
 
 export default async function BucketPage({
   params,
@@ -8,9 +9,12 @@ export default async function BucketPage({
 }) {
   const { bucket } = params;
 
-  const response = await fetch("http://localhost:3000/api/files/" + bucket, {
-    next: { revalidate: 10 },
-  });
+  const response = await fetch(
+    `${config.NEXT_PUBLIC_HOST}/api/files/` + bucket,
+    {
+      next: { revalidate: 10 },
+    }
+  );
   const { downloadLinks } = await response.json();
 
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import config from "@/config";
 import QRCode from "react-qr-code";
 
 export default function SuccessPage(props: { params: { bucketId: string } }) {
@@ -11,7 +12,7 @@ export default function SuccessPage(props: { params: { bucketId: string } }) {
     if (!bucketId) throw new Error();
 
     navigator.clipboard
-      .writeText(`http://localhost:3000/${bucketId}`)
+      .writeText(`${config.NEXT_PUBLIC_HOST}/${bucketId}`)
       .then((val) => {
         console.log(val);
       });
@@ -22,7 +23,7 @@ export default function SuccessPage(props: { params: { bucketId: string } }) {
       <p>Success! Bucket id is {bucketId}</p>
       <QRCode
         style={{ borderRadius: "10px" }}
-        value={`http://localhost:3000/${bucketId}`}
+        value={`${config.NEXT_PUBLIC_HOST}/${bucketId}`}
         width={400}
         height={400}
       />
