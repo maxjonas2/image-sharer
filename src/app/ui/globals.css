@@ -2,7 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --text-strong: #dc3e5f;
+
+  font-size: 16px;
+}
+
 .content {
-  max-width: 968px;
+  max-width: 600px;
   margin: 0 auto;
+}
+
+.btn-hollow {
+  width: 80px;
+  height: 30px;
+  border-radius: 8px;
+  border: 2px solid var(--text-strong, #dc3e5f);
+
+  &:hover {
+    color: white;
+    background-color: var(--text-strong);
+  }
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.will-receive-file {
+  transform: scale(1.15);
 }

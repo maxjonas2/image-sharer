@@ -1,8 +1,8 @@
 "use client";
 
-import clsx from "clsx";
-import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import UploadBlob from "./UploadBlob";
 
 export default function UploadContainer() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -70,7 +70,7 @@ export default function UploadContainer() {
     });
 
     dragArea.addEventListener("dragleave", () => {
-      setDragEnter(false);
+      // setDragEnter(false);
     });
 
     dragArea.addEventListener("drop", (e) => {
@@ -106,26 +106,44 @@ export default function UploadContainer() {
 
   return (
     <>
-      <form action=''>
-        <div className='flex flex-col'>
-          <button type='button' onClick={handleFileUpload}>
-            Upload
-          </button>
+      <form action='' className='centered flex-col'>
+        <div
+          ref={dragAreaRef}
+          className={
+            "transition-transform " + (dragEnter ? "will-receive-file" : "")
+          }
+        >
+          <UploadBlob />
         </div>
+        <div className='flex flex-col'></div>
       </form>
-      <div
-        ref={dragAreaRef}
-        className={clsx(
-          "image-drag-area min-h-32 border-2 border-slate-300 border-dashed transition-all grid place-content-center",
-          dragEnter && "border-4 border-green-600"
-        )}
-      >
-        {files.length === 0 && <p>Drag and Drop</p>}
+      <div className='mt-8'>
+        {files.length === 0 ? (
+          <div className='centered flex-col'>
+            <picture>
+              <img
+                width={50}
+                src='/assets/uploadArrow.svg'
+                className='animate-bounce motion-reduce:animate-none'
+              />
+            </picture>
+            <p className='mt-4 text-[--text-strong] font-bold'>
+              Drop images on blob
+            </p>
+            <p className='mt-4 text-[--text-strong] font-bold text-lg'>OR</p>
+            <div className='controls mt-4 text-[--text-strong] font-bold text-lg'>
+              <button className='w-[148px] h-[38px] centered text-white bg-[--text-strong] shadow-xl shadow-pink-600/20 rounded-lg'>
+                Browse
+              </button>
+            </div>
+          </div>
+        ) : null}
         <FilePreview files={files} />
       </div>
       <div>
         <form action='' onInput={(e) => console.log(e.currentTarget)}>
           <input
+            hidden
             type='file'
             multiple
             ref={inputRef}
