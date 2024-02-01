@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import ImageGrid from "../ui/ImageGrid";
 import config from "@/config";
 

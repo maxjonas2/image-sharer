@@ -18,11 +18,11 @@
   height: 30px;
   border-radius: 8px;
   border: 2px solid var(--text-strong, #dc3e5f);
+}
 
-  &:hover {
-    color: white;
-    background-color: var(--text-strong);
-  }
+.btn-hollow:hover {
+  color: white;
+  background-color: var(--text-strong);
 }
 
 .centered {
